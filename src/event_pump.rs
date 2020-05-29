@@ -1,21 +1,16 @@
 use std::rc::Rc;
 use std::cell::RefCell;
 
-pub enum Events {
-    Misc(String),
-    GameStart(i32)
+pub trait Subscriber<T> {
+    fn handle_event(&self, event: &T);
 }
 
-pub trait Subscriber {
-    fn handle_event(&self, event: &Events);
+pub struct EventPump<T> {
+    events: Vec<T>,
+    subs: Vec<Rc<RefCell<dyn Subscriber<T>>>>,
 }
 
-pub struct EventPump {
-    events: Vec<Events>,
-    subs: Vec<Rc<RefCell<dyn Subscriber>>>,
-}
-
-impl EventPump {
+impl<T> EventPump<T> {
     pub fn new() -> Self {
         EventPump{
             events: vec![],
@@ -32,11 +27,11 @@ impl EventPump {
         self.events.clear();
     }
 
-    pub fn post_event(&mut self, event: Events) {
+    pub fn post_event(&mut self, event: T) {
         self.events.push(event);
     }
 
-    pub fn add_sub(&mut self, sub: Rc<RefCell<dyn Subscriber>>) {
+    pub fn add_sub(&mut self, sub: Rc<RefCell<dyn Subscriber<T>>>) {
         self.subs.push(sub.clone());
     }
 }
