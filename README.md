@@ -1,0 +1,1 @@
+This is a demo for how to do subscription and broadcasting of events in rust.
