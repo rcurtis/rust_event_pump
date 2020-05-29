@@ -1,6 +1,5 @@
 #![allow(warnings)]
 
-use std::{thread, time};
 use std::io::*;
 use crate::event_pump::{EventPump, Subscriber};
 use std::rc::Rc;
